@@ -1,5 +1,3 @@
-import com.opencsv.exceptions.CsvException;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -40,47 +38,24 @@ public class Main {
      * @return Returns a string with data in JSON format.
      */
     private static String getData(){
-        String json_str = "";
-        try{
-            CSV csv_file = new CSV(csv_path);
-            List<RecordItem> all_records =  csv_file.getRecords();
-            json_str = new JSON(all_records).getJSONString();
-        } catch (FileNotFoundException e) {
-            Loger.log(String.format("File not found. %s\n", e.getMessage()), Loger.log_type.Error);
-        } catch (CsvException e) {
-            Loger.log(e.getMessage(), Loger.log_type.Error);
-        } catch (IOException e) {
-            Loger.log(e.getMessage(), Loger.log_type.Error);
-        }
+        String json_str;
+        CSV csv_file = new CSV(csv_path);
+        List<RecordItem> all_records =  csv_file.getRecords();
+        json_str = new JSON(all_records).getJSONString();
         return json_str;
     }
 
     private static void addData(String[] values){
-        try{
-            CSV csv_file = new CSV(csv_path);
-            csv_file.addRecord(new RecordItem(values));
-        } catch (FileNotFoundException e) {
-            Loger.log(String.format("File not found. %s\n", e.getMessage()), Loger.log_type.Error);
-        } catch (CsvException e) {
-            Loger.log(e.getMessage(), Loger.log_type.Error);
-        } catch (IOException e) {
-            Loger.log(e.getMessage(), Loger.log_type.Error);
-        }
+        // нет порверки символов на валидность (12 цифр)
+        CSV csv_file = new CSV(csv_path);
+        csv_file.addRecord(new RecordItem(values));
     }
 
     /**
      * @param value The string value of the company name or tax number whose data you want to delete.
      */
     private static void deleteData(String value){
-        try{
-            CSV csv_file = new CSV(csv_path);
-            csv_file.deleteRecord(value);
-        } catch (FileNotFoundException e) {
-            Loger.log(String.format("File not found. %s\n", e.getMessage()), Loger.log_type.Error);
-        } catch (CsvException e) {
-            Loger.log(e.getMessage(), Loger.log_type.Error);
-        } catch (IOException e) {
-            Loger.log(e.getMessage(), Loger.log_type.Error);
-        }
+        CSV csv_file = new CSV(csv_path);
+        csv_file.deleteRecord(value);
     }
 }

@@ -1,49 +1,42 @@
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvException;
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CSV {
 
+    enum Headers {
+        company, tax_num, phone, address, first_name, surname
+    }
+
     private String csvPath = null;
     private List<String[]> data;
 
-    /**
-     * @param filePath Абсолютный путь с именем файла (CSV).
-     */
-    public CSV(String filePath) throws FileNotFoundException, IOException, CsvException {
+    public CSV(String filePath) {
         // constructor
         if (filePath != null && !filePath.equals("")) {
             this.csvPath = filePath;
             FileReader fileReader;
-            CSVReader csvFileReader = null;
+            CSVReader csvFileReader;
             try {
                 fileReader = new FileReader(this.csvPath);
                 csvFileReader = new CSVReader(fileReader);
                 data = csvFileReader.readAll();
-            } finally {
-                if (csvFileReader != null) {
-                    try {
-                        csvFileReader.close();
-                    } catch (IOException e) {
-                        Loger.log(String.format("IO Error. %s\n", e.getMessage() ), Loger.log_type.Error);
-                    }
-                }
+
+            } catch (FileNotFoundException e) {
+                Loger.log("Error. CSV file not found.", Loger.log_type.Error);
+                System.exit(1);
+            } catch (IllegalArgumentException e){
+                Loger.log("Not enough company data. skipping");
+            } catch (IOException e) {
+                Loger.log("Error reading CSV file.", Loger.log_type.Error);
+                System.exit(2);
             }
-        } else {
-            Loger.log("CSV path is null\n", Loger.log_type.Error);
         }
     }
 
-    /**
-     * @return Returns a list, each element of which is an object filled with data about the company
-     */
     public List<RecordItem> getRecords(){
         List<RecordItem> all_rec = new ArrayList<RecordItem>();
         for (String[] line : data){
@@ -58,10 +51,6 @@ public class CSV {
         return all_rec;
     }
 
-    /**
-     * @param record Accepts an object populated with data from a new record.
-     * @return Returns the execution status. If successful, true.
-     */
     public boolean addRecord(RecordItem record){
         String company = record.getCompany_name();
         String tax = record.getTax_number();
@@ -94,10 +83,7 @@ public class CSV {
         return false;
     }
 
-    /**
-     * @param value By the value of this parameter, the method will delete one record in the CSV file.
-     * @return Status. If the record is deleted, True will be returned.
-     */
+
     public boolean deleteRecord(String value){
         boolean result = false;
         int index = checkExistence(value);
@@ -111,10 +97,7 @@ public class CSV {
         return result;
     }
 
-    /**
-     * @param index The sequence number of the line in the file to be deleted.
-     * @return Status. If the record is deleted, True will be returned.
-     */
+
     public boolean deleteRecord(int index){
         boolean result = false;
         if (index >= 0) {
@@ -155,7 +138,7 @@ public class CSV {
     /**
      * @return Status. If data was written to a file, returns true.
      */
-    private boolean writeDataToCsv(){
+    private boolean writeDataToCsv() {
         boolean result = false;
         FileWriter sw;
         CSVWriter writer = null;

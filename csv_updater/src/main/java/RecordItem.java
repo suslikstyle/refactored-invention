@@ -3,7 +3,12 @@
  */
 public class RecordItem {
 
-    private String company_name, tax_number, phone_number, address, director_name, director_surname;
+    private String company_name = "";
+    private String tax_number = "";
+    private String phone_number = "";
+    private String address = "";
+    private String director_name = "";
+    private String director_surname = "";
 
     /**
      * @param company_name Наименование компании
@@ -28,7 +33,6 @@ public class RecordItem {
      * @param line массив строк в определенной последовательности для создания объекта записи       !!
      */
     public RecordItem(String[] line){
-        // constructor
         try{
             this.company_name = line[0];
             this.tax_number = line[1];
