@@ -47,6 +47,10 @@ public class Config {
         }
         return result;
     }
+
+    /**
+     * @return username String from settings.
+     */
     public String getUsername(){
         String result;
         try {
@@ -57,6 +61,10 @@ public class Config {
         }
         return result;
     }
+
+    /**
+     * @return password String from settings.
+     */
     public String getPassword(){
         String result;
         try {
@@ -68,6 +76,9 @@ public class Config {
         return result;
     }
 
+    /**
+     * @return A line from the settings indicating the location of the updater
+     */
     public String getUpdater_path(){
         String result;
         try {
@@ -78,12 +89,28 @@ public class Config {
         return result;
     }
 
+    /**
+     * @return Used character encoding from settings.
+     */
     public String getCharset(){
         String result;
         try {
             result = this.config.get("charset_name").toString();
         } catch (Exception e){
             result = null;
+        }
+        return result;
+    }
+
+    /**
+     * @return The delay value between updates specified in the settings.
+     */
+    public int getUpdateDelay(){
+        int result = 20000;
+        try {
+            result = (int) this.config.get("update_delay");
+        } catch (Exception e){
+//            result = 20000;
         }
         return result;
     }

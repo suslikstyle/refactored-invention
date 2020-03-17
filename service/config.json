@@ -1,8 +1,9 @@
 {
+  "update_delay": 5000,
   "charset_name": "windows-1251",
   "updater_path": "B:/java/refactored-invention/csv_updater/target/csv_updater-0.1.jar",
   "mysql_server": {
-    "url": "jdbc:mysql://localhost/test_db?serverTimezone=Asia/Krasnoyarsk&useSSL=false",
+    "url": "jdbc:mysql://localhost?serverTimezone=Asia/Krasnoyarsk&useSSL=false",
     "username": "test",
     "password": "pass"
   }
