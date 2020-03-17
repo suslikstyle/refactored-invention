@@ -18,5 +18,6 @@ or
 ## service ##
 The service should use сsv_updater to keep the MySQL database up to date.
 ### Usage ###
-    java -jar service.jar
+    java -jar service.jar -start
+in a running application, the 'help' or 'h' command displays help.
 ###### I'm sorry for my English. ######

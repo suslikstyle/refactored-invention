@@ -129,6 +129,7 @@ public class Database {
                         item.getAddress(),item.getDirector_name(),item.getDirector_surname());
             }
             System.out.printf("\rAdded to database %d value\n>> ", add_list.size());
+            App.addCounterInsert(add_list.size());
         }
          // Remove record from database
         if (!remove_list.isEmpty()) {
@@ -136,6 +137,7 @@ public class Database {
                 removeRecord(item);
             }
             System.out.printf("\rRemoved from database %d values\n>> ", remove_list.size());
+            App.deleteCounterInsert(remove_list.size());
         }
     }
 
@@ -191,5 +193,19 @@ public class Database {
             Loger.log("Error requesting data.\n" + se.getMessage(), Loger.log_type.Error);
         }
         return result;
+    }
+
+    public long getSize(){
+        String query = "SELECT COUNT(*) as db_size FROM `data_table`;";
+        try {
+            rs = stmt.executeQuery(query);
+            rs.first();
+            return rs.getInt("db_size");
+        } catch (NullPointerException e) {
+//                Loger.log(e.getMessage(), Loger.log_type.Error);
+        } catch (SQLException se) {
+            Loger.log("Error requesting data.\n" + se.getMessage(), Loger.log_type.Error);
+        }
+        return 0;
     }
 }
